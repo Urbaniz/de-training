@@ -43,12 +43,3 @@ CREATE TABLE sat_order (
     
     PRIMARY KEY (order_hash_key, load_date)
 );
-
-CREATE TABLE sat_lnk_line_order(
-	link_hash_key BYTEA NOT NULL REFERENCES lnk_line_order(link_hash_key),
-	load_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	record_source VARCHAR(255) NOT NULL,
-	from_date TIMESTAMP NOT NULL,
-	to_date TIMESTAMP,
-	PRIMARY KEY (link_hash_key, load_date)
-);
