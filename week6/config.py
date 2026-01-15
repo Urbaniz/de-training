@@ -1,0 +1,5 @@
+PG_URI = "postgresql://user:password@localhost:5434/db"
+ENDPOINT_KEY = "http://localhost:9000"
+ACCESS_KEY = "minio"
+SECRET_KEY = "miniopassword"
+BUCKET = "lake"
