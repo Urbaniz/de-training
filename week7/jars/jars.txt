@@ -1,0 +1,4 @@
+В папку загрузить 3 библиотеки:
+postgresql-42.7.8.jar - для подключаться к PostgreSQL
+hadoop-aws-3.3.4.jar - для доступа к minio
+aws-java-sdk-bundle-1.12.262.jar - набор инструментовдля работы с S3
