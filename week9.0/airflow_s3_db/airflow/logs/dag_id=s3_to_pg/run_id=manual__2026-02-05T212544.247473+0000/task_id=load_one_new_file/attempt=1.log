@@ -1,0 +1,234 @@
+[2026-02-05T21:25:45.662+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2026-02-05T21:25:45.690+0000] {taskinstance.py:2613} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: s3_to_pg.load_one_new_file manual__2026-02-05T21:25:44.247473+00:00 [queued]>
+[2026-02-05T21:25:45.701+0000] {taskinstance.py:2613} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: s3_to_pg.load_one_new_file manual__2026-02-05T21:25:44.247473+00:00 [queued]>
+[2026-02-05T21:25:45.702+0000] {taskinstance.py:2866} INFO - Starting attempt 1 of 1
+[2026-02-05T21:25:45.780+0000] {taskinstance.py:2889} INFO - Executing <Task(PythonOperator): load_one_new_file> on 2026-02-05 21:25:44.247473+00:00
+[2026-02-05T21:25:45.791+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 's3_to_pg', 'load_one_new_file', 'manual__2026-02-05T21:25:44.247473+00:00', '--job-id', '9', '--raw', '--subdir', 'DAGS_FOLDER/s3_to_pg.py', '--cfg-path', '/tmp/tmpyriu16e3']
+[2026-02-05T21:25:45.795+0000] {standard_task_runner.py:105} INFO - Job 9: Subtask load_one_new_file
+[2026-02-05T21:25:46.044+0000] {logging_mixin.py:190} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70 DeprecationWarning: This process (pid=1972) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-02-05T21:25:46.045+0000] {standard_task_runner.py:72} INFO - Started process 1974 to run task
+[2026-02-05T21:25:46.091+0000] {task_command.py:467} INFO - Running <TaskInstance: s3_to_pg.load_one_new_file manual__2026-02-05T21:25:44.247473+00:00 [running]> on host 134ebd8311dd
+[2026-02-05T21:25:46.198+0000] {taskinstance.py:3132} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='s3_to_pg' AIRFLOW_CTX_TASK_ID='load_one_new_file' AIRFLOW_CTX_EXECUTION_DATE='2026-02-05T21:25:44.247473+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-02-05T21:25:44.247473+00:00'
+[2026-02-05T21:25:46.200+0000] {taskinstance.py:731} INFO - ::endgroup::
+[2026-02-05T21:25:46.234+0000] {base.py:84} INFO - Retrieving connection 'pg_target'
+[2026-02-05T21:25:46.251+0000] {sql.py:553} INFO - Running statement: select file_name from file_status where loaded_at is not null, parameters: None
+[2026-02-05T21:25:46.254+0000] {sql.py:562} INFO - Rows affected: 0
+[2026-02-05T21:25:46.271+0000] {base.py:84} INFO - Retrieving connection 's3'
+[2026-02-05T21:25:46.272+0000] {connection_wrapper.py:325} INFO - AWS Connection (conn_id='s3', conn_type='aws') credentials retrieved from login and ***.
+[2026-02-05T21:25:47.405+0000] {base.py:84} INFO - Retrieving connection 'pg_target'
+[2026-02-05T21:25:47.698+0000] {taskinstance.py:3311} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1890, in _execute_context
+    self.dialect.do_executemany(
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/dialects/postgresql/psycopg2.py", line 982, in do_executemany
+    context._psycopg2_fetched_rows = xtras.execute_values(
+                                     ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/psycopg2/extras.py", line 1296, in execute_values
+    parts.append(cur.mogrify(template, args))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.ProgrammingError: can't adapt type 'type'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 767, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 733, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 422, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 238, in execute
+    return_value = self.execute_callable()
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 256, in execute_callable
+    return runner.run(*self.op_args, **self.op_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/dags/s3_to_pg.py", line 41, in load_one_new_file
+    df.to_sql(
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/util/_decorators.py", line 333, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/core/generic.py", line 3008, in to_sql
+    return sql.to_sql(
+           ^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/io/sql.py", line 788, in to_sql
+    return pandas_sql.to_sql(
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/io/sql.py", line 1958, in to_sql
+    total_inserted = sql_engine.insert_records(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/io/sql.py", line 1507, in insert_records
+    raise err
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/io/sql.py", line 1498, in insert_records
+    return table.insert(chunksize=chunksize, method=method)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/io/sql.py", line 1059, in insert
+    num_inserted = exec_insert(conn, keys, chunk_iter)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/io/sql.py", line 951, in _execute_insert
+    result = conn.execute(self.table.insert(), data)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1385, in execute
+    return meth(self, multiparams, params, _EMPTY_EXECUTION_OPTS)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 334, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1577, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1953, in _execute_context
+    self._handle_dbapi_exception(
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2134, in _handle_dbapi_exception
+    util.raise_(
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/util/compat.py", line 211, in raise_
+    raise exception
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1890, in _execute_context
+    self.dialect.do_executemany(
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/dialects/postgresql/psycopg2.py", line 982, in do_executemany
+    context._psycopg2_fetched_rows = xtras.execute_values(
+                                     ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/psycopg2/extras.py", line 1296, in execute_values
+    parts.append(cur.mogrify(template, args))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.ProgrammingError: (psycopg2.ProgrammingError) can't adapt type 'type'
+[SQL: INSERT INTO public.web_logs_loaded (timestamp, user_id, url, response_time, status_code, day, is_error, source_file, ingest_ts) VALUES (%(timestamp)s, %(user_id)s, %(url)s, %(response_time)s, %(status_code)s, %(day)s, %(is_error)s, %(source_file)s, %(ingest_ts)s)]
+[parameters: ({'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 124, 'url': 'https://edu.ru/image', 'response_time': 480, 'status_code': 429, 'day': datetime.date(2026, 2, 5), 'is_error': True, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}, {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 13, 'url': 'https://edu.ru/blog', 'response_time': 230, 'status_code': 404, 'day': datetime.date(2026, 2, 5), 'is_error': True, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}, {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 355, 'url': 'https://edu.ru/image', 'response_time': 72, 'status_code': 301, 'day': datetime.date(2026, 2, 5), 'is_error': False, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}, {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 498, 'url': 'https://edu.ru/settings', 'response_time': 282, 'status_code': 403, 'day': datetime.date(2026, 2, 5), 'is_error': True, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}, {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 826, 'url': 'https://edu.ru/product', 'response_time': 977, 'status_code': 204, 'day': datetime.date(2026, 2, 5), 'is_error': False, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}, {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 134, 'url': 'https://edu.ru/blog', 'response_time': 923, 'status_code': 301, 'day': datetime.date(2026, 2, 5), 'is_error': False, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}, {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 924, 'url': 'https://edu.ru/product', 'response_time': 516, 'status_code': 429, 'day': datetime.date(2026, 2, 5), 'is_error': True, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}, {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 83, 'url': 'https://edu.ru/blog', 'response_time': 319, 'status_code': 404, 'day': datetime.date(2026, 2, 5), 'is_error': True, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}  ... displaying 10 of 12 total bound parameter sets ...  {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 502, 'url': 'https://edu.ru/image', 'response_time': 664, 'status_code': 403, 'day': datetime.date(2026, 2, 5), 'is_error': True, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}, {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 473, 'url': 'https://edu.ru/image', 'response_time': 521, 'status_code': 404, 'day': datetime.date(2026, 2, 5), 'is_error': True, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>})]
+(Background on this error at: https://sqlalche.me/e/14/f405)
+[2026-02-05T21:25:47.749+0000] {taskinstance.py:1225} INFO - Marking task as FAILED. dag_id=s3_to_pg, task_id=load_one_new_file, run_id=manual__2026-02-05T21:25:44.247473+00:00, execution_date=20260205T212544, start_date=20260205T212545, end_date=20260205T212547
+[2026-02-05T21:25:47.769+0000] {taskinstance.py:340} INFO - ::group::Post task execution logs
+[2026-02-05T21:25:47.772+0000] {standard_task_runner.py:124} ERROR - Failed to execute job 9 for task load_one_new_file ((psycopg2.ProgrammingError) can't adapt type 'type'
+[SQL: INSERT INTO public.web_logs_loaded (timestamp, user_id, url, response_time, status_code, day, is_error, source_file, ingest_ts) VALUES (%(timestamp)s, %(user_id)s, %(url)s, %(response_time)s, %(status_code)s, %(day)s, %(is_error)s, %(source_file)s, %(ingest_ts)s)]
+[parameters: ({'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 124, 'url': 'https://edu.ru/image', 'response_time': 480, 'status_code': 429, 'day': datetime.date(2026, 2, 5), 'is_error': True, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}, {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 13, 'url': 'https://edu.ru/blog', 'response_time': 230, 'status_code': 404, 'day': datetime.date(2026, 2, 5), 'is_error': True, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}, {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 355, 'url': 'https://edu.ru/image', 'response_time': 72, 'status_code': 301, 'day': datetime.date(2026, 2, 5), 'is_error': False, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}, {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 498, 'url': 'https://edu.ru/settings', 'response_time': 282, 'status_code': 403, 'day': datetime.date(2026, 2, 5), 'is_error': True, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}, {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 826, 'url': 'https://edu.ru/product', 'response_time': 977, 'status_code': 204, 'day': datetime.date(2026, 2, 5), 'is_error': False, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}, {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 134, 'url': 'https://edu.ru/blog', 'response_time': 923, 'status_code': 301, 'day': datetime.date(2026, 2, 5), 'is_error': False, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}, {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 924, 'url': 'https://edu.ru/product', 'response_time': 516, 'status_code': 429, 'day': datetime.date(2026, 2, 5), 'is_error': True, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}, {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 83, 'url': 'https://edu.ru/blog', 'response_time': 319, 'status_code': 404, 'day': datetime.date(2026, 2, 5), 'is_error': True, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}  ... displaying 10 of 12 total bound parameter sets ...  {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 502, 'url': 'https://edu.ru/image', 'response_time': 664, 'status_code': 403, 'day': datetime.date(2026, 2, 5), 'is_error': True, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}, {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 473, 'url': 'https://edu.ru/image', 'response_time': 521, 'status_code': 404, 'day': datetime.date(2026, 2, 5), 'is_error': True, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>})]
+(Background on this error at: https://sqlalche.me/e/14/f405); 1974)
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1890, in _execute_context
+    self.dialect.do_executemany(
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/dialects/postgresql/psycopg2.py", line 982, in do_executemany
+    context._psycopg2_fetched_rows = xtras.execute_values(
+                                     ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/psycopg2/extras.py", line 1296, in execute_values
+    parts.append(cur.mogrify(template, args))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.ProgrammingError: can't adapt type 'type'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/task/task_runner/standard_task_runner.py", line 117, in _start_by_fork
+    ret = args.func(args, dag=self.dag)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/cli_config.py", line 49, in command
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/cli.py", line 116, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 483, in task_run
+    task_return_code = _run_task_by_selected_method(args, _dag, ti)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 256, in _run_task_by_selected_method
+    return _run_raw_task(args, ti)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 341, in _run_raw_task
+    return ti._run_raw_task(
+           ^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/session.py", line 97, in wrapper
+    return func(*args, session=session, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3005, in _run_raw_task
+    return _run_raw_task(
+           ^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 273, in _run_raw_task
+    TaskInstance._execute_task_with_callbacks(
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3159, in _execute_task_with_callbacks
+    result = self._execute_task(context, task_orig)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3183, in _execute_task
+    return _execute_task(self, context, task_orig)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 767, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 733, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 422, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 238, in execute
+    return_value = self.execute_callable()
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 256, in execute_callable
+    return runner.run(*self.op_args, **self.op_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/dags/s3_to_pg.py", line 41, in load_one_new_file
+    df.to_sql(
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/util/_decorators.py", line 333, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/core/generic.py", line 3008, in to_sql
+    return sql.to_sql(
+           ^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/io/sql.py", line 788, in to_sql
+    return pandas_sql.to_sql(
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/io/sql.py", line 1958, in to_sql
+    total_inserted = sql_engine.insert_records(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/io/sql.py", line 1507, in insert_records
+    raise err
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/io/sql.py", line 1498, in insert_records
+    return table.insert(chunksize=chunksize, method=method)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/io/sql.py", line 1059, in insert
+    num_inserted = exec_insert(conn, keys, chunk_iter)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/io/sql.py", line 951, in _execute_insert
+    result = conn.execute(self.table.insert(), data)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1385, in execute
+    return meth(self, multiparams, params, _EMPTY_EXECUTION_OPTS)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 334, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1577, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1953, in _execute_context
+    self._handle_dbapi_exception(
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2134, in _handle_dbapi_exception
+    util.raise_(
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/util/compat.py", line 211, in raise_
+    raise exception
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1890, in _execute_context
+    self.dialect.do_executemany(
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/dialects/postgresql/psycopg2.py", line 982, in do_executemany
+    context._psycopg2_fetched_rows = xtras.execute_values(
+                                     ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/psycopg2/extras.py", line 1296, in execute_values
+    parts.append(cur.mogrify(template, args))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.ProgrammingError: (psycopg2.ProgrammingError) can't adapt type 'type'
+[SQL: INSERT INTO public.web_logs_loaded (timestamp, user_id, url, response_time, status_code, day, is_error, source_file, ingest_ts) VALUES (%(timestamp)s, %(user_id)s, %(url)s, %(response_time)s, %(status_code)s, %(day)s, %(is_error)s, %(source_file)s, %(ingest_ts)s)]
+[parameters: ({'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 124, 'url': 'https://edu.ru/image', 'response_time': 480, 'status_code': 429, 'day': datetime.date(2026, 2, 5), 'is_error': True, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}, {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 13, 'url': 'https://edu.ru/blog', 'response_time': 230, 'status_code': 404, 'day': datetime.date(2026, 2, 5), 'is_error': True, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}, {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 355, 'url': 'https://edu.ru/image', 'response_time': 72, 'status_code': 301, 'day': datetime.date(2026, 2, 5), 'is_error': False, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}, {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 498, 'url': 'https://edu.ru/settings', 'response_time': 282, 'status_code': 403, 'day': datetime.date(2026, 2, 5), 'is_error': True, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}, {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 826, 'url': 'https://edu.ru/product', 'response_time': 977, 'status_code': 204, 'day': datetime.date(2026, 2, 5), 'is_error': False, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}, {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 134, 'url': 'https://edu.ru/blog', 'response_time': 923, 'status_code': 301, 'day': datetime.date(2026, 2, 5), 'is_error': False, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}, {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 924, 'url': 'https://edu.ru/product', 'response_time': 516, 'status_code': 429, 'day': datetime.date(2026, 2, 5), 'is_error': True, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}, {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 83, 'url': 'https://edu.ru/blog', 'response_time': 319, 'status_code': 404, 'day': datetime.date(2026, 2, 5), 'is_error': True, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}  ... displaying 10 of 12 total bound parameter sets ...  {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 502, 'url': 'https://edu.ru/image', 'response_time': 664, 'status_code': 403, 'day': datetime.date(2026, 2, 5), 'is_error': True, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>}, {'timestamp': datetime.datetime(2026, 2, 5, 17, 5, 8), 'user_id': 473, 'url': 'https://edu.ru/image', 'response_time': 521, 'status_code': 404, 'day': datetime.date(2026, 2, 5), 'is_error': True, 'source_file': 'parquet/1.parquet', 'ingest_ts': <class 'datetime.datetime'>})]
+(Background on this error at: https://sqlalche.me/e/14/f405)
+[2026-02-05T21:25:47.815+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 1
+[2026-02-05T21:25:47.874+0000] {taskinstance.py:3895} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-02-05T21:25:47.884+0000] {local_task_job_runner.py:245} INFO - ::endgroup::

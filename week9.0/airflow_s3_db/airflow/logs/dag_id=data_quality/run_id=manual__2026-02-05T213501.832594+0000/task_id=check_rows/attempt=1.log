@@ -1,0 +1,142 @@
+[2026-02-05T21:35:02.829+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2026-02-05T21:35:02.855+0000] {taskinstance.py:2613} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: data_quality.check_rows manual__2026-02-05T21:35:01.832594+00:00 [queued]>
+[2026-02-05T21:35:02.867+0000] {taskinstance.py:2613} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: data_quality.check_rows manual__2026-02-05T21:35:01.832594+00:00 [queued]>
+[2026-02-05T21:35:02.868+0000] {taskinstance.py:2866} INFO - Starting attempt 1 of 1
+[2026-02-05T21:35:02.886+0000] {taskinstance.py:2889} INFO - Executing <Task(PythonOperator): check_rows> on 2026-02-05 21:35:01.832594+00:00
+[2026-02-05T21:35:02.897+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'data_quality', 'check_rows', 'manual__2026-02-05T21:35:01.832594+00:00', '--job-id', '13', '--raw', '--subdir', 'DAGS_FOLDER/dq.py', '--cfg-path', '/tmp/tmpes16qros']
+[2026-02-05T21:35:02.901+0000] {standard_task_runner.py:105} INFO - Job 13: Subtask check_rows
+[2026-02-05T21:35:03.145+0000] {logging_mixin.py:190} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70 DeprecationWarning: This process (pid=2377) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-02-05T21:35:03.146+0000] {standard_task_runner.py:72} INFO - Started process 2379 to run task
+[2026-02-05T21:35:03.203+0000] {task_command.py:467} INFO - Running <TaskInstance: data_quality.check_rows manual__2026-02-05T21:35:01.832594+00:00 [running]> on host 134ebd8311dd
+[2026-02-05T21:35:03.331+0000] {taskinstance.py:3132} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='data_quality' AIRFLOW_CTX_TASK_ID='check_rows' AIRFLOW_CTX_EXECUTION_DATE='2026-02-05T21:35:01.832594+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-02-05T21:35:01.832594+00:00'
+[2026-02-05T21:35:03.332+0000] {taskinstance.py:731} INFO - ::endgroup::
+[2026-02-05T21:35:03.364+0000] {base.py:84} INFO - Retrieving connection 'pg_target'
+[2026-02-05T21:35:03.380+0000] {sql.py:553} INFO - Running statement: 
+        select file_name
+        from file_status
+        where loaded_at is not null
+          and checked_at is null
+        limit 1
+        , parameters: None
+[2026-02-05T21:35:03.384+0000] {sql.py:562} INFO - Rows affected: 1
+[2026-02-05T21:35:03.400+0000] {base.py:84} INFO - Retrieving connection 's3'
+[2026-02-05T21:35:03.401+0000] {connection_wrapper.py:325} INFO - AWS Connection (conn_id='s3', conn_type='aws') credentials retrieved from login and ***.
+[2026-02-05T21:35:03.582+0000] {sql.py:553} INFO - Running statement: 
+        select count(*)
+        from web_logs_loaded
+        where source_file = %s
+        , parameters: ('parquet/1.parquet',)
+[2026-02-05T21:35:03.590+0000] {sql.py:562} INFO - Rows affected: 1
+[2026-02-05T21:35:03.618+0000] {sql.py:553} INFO - Running statement: 
+        update file_status
+        set checked_at = now(),
+            table_rows = %s,
+            ok = %s
+        where file_name = %s
+        , parameters: (12, True, 'parquet/1.parquet')
+[2026-02-05T21:35:03.623+0000] {taskinstance.py:3311} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 767, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 733, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 422, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 238, in execute
+    return_value = self.execute_callable()
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 256, in execute_callable
+    return runner.run(*self.op_args, **self.op_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/dags/dq.py", line 49, in check_rowcount
+    pg.run(
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/common/sql/hooks/sql.py", line 498, in run
+    self._run_command(cur, sql_statement, parameters)
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/common/sql/hooks/sql.py", line 556, in _run_command
+    cur.execute(sql_statement, parameters)
+psycopg2.errors.UndefinedColumn: column "ok" of relation "file_status" does not exist
+LINE 5:             ok = true
+                    ^
+
+[2026-02-05T21:35:03.653+0000] {taskinstance.py:1225} INFO - Marking task as FAILED. dag_id=data_quality, task_id=check_rows, run_id=manual__2026-02-05T21:35:01.832594+00:00, execution_date=20260205T213501, start_date=20260205T213502, end_date=20260205T213503
+[2026-02-05T21:35:03.676+0000] {taskinstance.py:340} INFO - ::group::Post task execution logs
+[2026-02-05T21:35:03.677+0000] {standard_task_runner.py:124} ERROR - Failed to execute job 13 for task check_rows (column "ok" of relation "file_status" does not exist
+LINE 5:             ok = true
+                    ^
+; 2379)
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/task/task_runner/standard_task_runner.py", line 117, in _start_by_fork
+    ret = args.func(args, dag=self.dag)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/cli_config.py", line 49, in command
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/cli.py", line 116, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 483, in task_run
+    task_return_code = _run_task_by_selected_method(args, _dag, ti)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 256, in _run_task_by_selected_method
+    return _run_raw_task(args, ti)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 341, in _run_raw_task
+    return ti._run_raw_task(
+           ^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/session.py", line 97, in wrapper
+    return func(*args, session=session, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3005, in _run_raw_task
+    return _run_raw_task(
+           ^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 273, in _run_raw_task
+    TaskInstance._execute_task_with_callbacks(
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3159, in _execute_task_with_callbacks
+    result = self._execute_task(context, task_orig)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3183, in _execute_task
+    return _execute_task(self, context, task_orig)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 767, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 733, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 422, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 238, in execute
+    return_value = self.execute_callable()
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 256, in execute_callable
+    return runner.run(*self.op_args, **self.op_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/dags/dq.py", line 49, in check_rowcount
+    pg.run(
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/common/sql/hooks/sql.py", line 498, in run
+    self._run_command(cur, sql_statement, parameters)
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/common/sql/hooks/sql.py", line 556, in _run_command
+    cur.execute(sql_statement, parameters)
+psycopg2.errors.UndefinedColumn: column "ok" of relation "file_status" does not exist
+LINE 5:             ok = true
+                    ^
+
+[2026-02-05T21:35:03.724+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 1
+[2026-02-05T21:35:03.744+0000] {taskinstance.py:3895} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-02-05T21:35:03.746+0000] {local_task_job_runner.py:245} INFO - ::endgroup::

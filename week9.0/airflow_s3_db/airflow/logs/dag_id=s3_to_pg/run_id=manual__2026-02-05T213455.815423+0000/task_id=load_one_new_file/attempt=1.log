@@ -1,0 +1,30 @@
+[2026-02-05T21:34:56.850+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2026-02-05T21:34:56.877+0000] {taskinstance.py:2613} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: s3_to_pg.load_one_new_file manual__2026-02-05T21:34:55.815423+00:00 [queued]>
+[2026-02-05T21:34:56.898+0000] {taskinstance.py:2613} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: s3_to_pg.load_one_new_file manual__2026-02-05T21:34:55.815423+00:00 [queued]>
+[2026-02-05T21:34:56.899+0000] {taskinstance.py:2866} INFO - Starting attempt 1 of 1
+[2026-02-05T21:34:56.918+0000] {taskinstance.py:2889} INFO - Executing <Task(PythonOperator): load_one_new_file> on 2026-02-05 21:34:55.815423+00:00
+[2026-02-05T21:34:56.933+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 's3_to_pg', 'load_one_new_file', 'manual__2026-02-05T21:34:55.815423+00:00', '--job-id', '12', '--raw', '--subdir', 'DAGS_FOLDER/s3_to_pg.py', '--cfg-path', '/tmp/tmpkbles9aj']
+[2026-02-05T21:34:56.938+0000] {standard_task_runner.py:105} INFO - Job 12: Subtask load_one_new_file
+[2026-02-05T21:34:57.230+0000] {logging_mixin.py:190} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70 DeprecationWarning: This process (pid=2365) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-02-05T21:34:57.231+0000] {standard_task_runner.py:72} INFO - Started process 2367 to run task
+[2026-02-05T21:34:57.297+0000] {task_command.py:467} INFO - Running <TaskInstance: s3_to_pg.load_one_new_file manual__2026-02-05T21:34:55.815423+00:00 [running]> on host 134ebd8311dd
+[2026-02-05T21:34:57.404+0000] {taskinstance.py:3132} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='s3_to_pg' AIRFLOW_CTX_TASK_ID='load_one_new_file' AIRFLOW_CTX_EXECUTION_DATE='2026-02-05T21:34:55.815423+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-02-05T21:34:55.815423+00:00'
+[2026-02-05T21:34:57.405+0000] {taskinstance.py:731} INFO - ::endgroup::
+[2026-02-05T21:34:57.437+0000] {base.py:84} INFO - Retrieving connection 'pg_target'
+[2026-02-05T21:34:57.457+0000] {sql.py:553} INFO - Running statement: select file_name from file_status where loaded_at is not null, parameters: None
+[2026-02-05T21:34:57.462+0000] {sql.py:562} INFO - Rows affected: 0
+[2026-02-05T21:34:57.483+0000] {base.py:84} INFO - Retrieving connection 's3'
+[2026-02-05T21:34:57.483+0000] {connection_wrapper.py:325} INFO - AWS Connection (conn_id='s3', conn_type='aws') credentials retrieved from login and ***.
+[2026-02-05T21:34:58.470+0000] {base.py:84} INFO - Retrieving connection 'pg_target'
+[2026-02-05T21:34:58.545+0000] {sql.py:553} INFO - Running statement: 
+        insert into file_status(file_name, loaded_at, file_rows)
+        values (%s, now(), %s)
+        on conflict (file_name) do nothing
+        , parameters: ('parquet/1.parquet', 12)
+[2026-02-05T21:34:58.551+0000] {sql.py:562} INFO - Rows affected: 1
+[2026-02-05T21:34:58.557+0000] {python.py:240} INFO - Done. Returned value was: None
+[2026-02-05T21:34:58.574+0000] {taskinstance.py:340} INFO - ::group::Post task execution logs
+[2026-02-05T21:34:58.575+0000] {taskinstance.py:352} INFO - Marking task as SUCCESS. dag_id=s3_to_pg, task_id=load_one_new_file, run_id=manual__2026-02-05T21:34:55.815423+00:00, execution_date=20260205T213455, start_date=20260205T213456, end_date=20260205T213458
+[2026-02-05T21:34:58.613+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 0
+[2026-02-05T21:34:58.635+0000] {taskinstance.py:3895} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-02-05T21:34:58.637+0000] {local_task_job_runner.py:245} INFO - ::endgroup::

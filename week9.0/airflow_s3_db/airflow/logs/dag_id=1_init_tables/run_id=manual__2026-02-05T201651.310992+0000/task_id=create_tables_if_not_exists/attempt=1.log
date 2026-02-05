@@ -1,0 +1,57 @@
+[2026-02-05T20:16:52.359+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2026-02-05T20:16:52.390+0000] {taskinstance.py:2613} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: 1_init_tables.create_tables_if_not_exists manual__2026-02-05T20:16:51.310992+00:00 [queued]>
+[2026-02-05T20:16:52.402+0000] {taskinstance.py:2613} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: 1_init_tables.create_tables_if_not_exists manual__2026-02-05T20:16:51.310992+00:00 [queued]>
+[2026-02-05T20:16:52.402+0000] {taskinstance.py:2866} INFO - Starting attempt 1 of 1
+[2026-02-05T20:16:52.422+0000] {taskinstance.py:2889} INFO - Executing <Task(PostgresOperator): create_tables_if_not_exists> on 2026-02-05 20:16:51.310992+00:00
+[2026-02-05T20:16:52.445+0000] {logging_mixin.py:190} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70 DeprecationWarning: This process (pid=898) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-02-05T20:16:52.448+0000] {standard_task_runner.py:72} INFO - Started process 899 to run task
+[2026-02-05T20:16:52.447+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', '1_init_tables', 'create_tables_if_not_exists', 'manual__2026-02-05T20:16:51.310992+00:00', '--job-id', '2', '--raw', '--subdir', 'DAGS_FOLDER/1.py', '--cfg-path', '/tmp/tmp5s0tc4eq']
+[2026-02-05T20:16:52.450+0000] {standard_task_runner.py:105} INFO - Job 2: Subtask create_tables_if_not_exists
+[2026-02-05T20:16:52.537+0000] {task_command.py:467} INFO - Running <TaskInstance: 1_init_tables.create_tables_if_not_exists manual__2026-02-05T20:16:51.310992+00:00 [running]> on host 134ebd8311dd
+[2026-02-05T20:16:52.676+0000] {taskinstance.py:3132} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='1_init_tables' AIRFLOW_CTX_TASK_ID='create_tables_if_not_exists' AIRFLOW_CTX_EXECUTION_DATE='2026-02-05T20:16:51.310992+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-02-05T20:16:51.310992+00:00'
+[2026-02-05T20:16:52.680+0000] {taskinstance.py:731} INFO - ::endgroup::
+[2026-02-05T20:16:52.746+0000] {sql.py:278} INFO - Executing: 
+    create table if not exists web_logs_loaded (
+      timestamp timestamp,
+      user_id int,
+      url varchar(256),
+      response_time int,
+      status_code int,
+      source_file varchar(256),
+      ingest_ts timestamp default now()
+    );
+    
+    create table if not exists file_status (
+      file_name varchar(256) primary key,
+      loaded_at timestamp,
+      file_rows int,         
+      checked_at timestamp,          
+      table_rows int,              
+      same boolean         
+    );
+[2026-02-05T20:16:52.764+0000] {base.py:84} INFO - Retrieving connection 'pg_target'
+[2026-02-05T20:16:52.788+0000] {base.py:84} INFO - Retrieving connection 'pg_target'
+[2026-02-05T20:16:52.813+0000] {sql.py:553} INFO - Running statement: 
+    create table if not exists web_logs_loaded (
+      timestamp timestamp,
+      user_id int,
+      url varchar(256),
+      response_time int,
+      status_code int,
+      source_file varchar(256),
+      ingest_ts timestamp default now()
+    );
+    
+    create table if not exists file_status (
+      file_name varchar(256) primary key,
+      loaded_at timestamp,
+      file_rows int,         
+      checked_at timestamp,          
+      table_rows int,              
+      same boolean         
+    );, parameters: None
+[2026-02-05T20:16:52.878+0000] {taskinstance.py:340} INFO - ::group::Post task execution logs
+[2026-02-05T20:16:52.879+0000] {taskinstance.py:352} INFO - Marking task as SUCCESS. dag_id=1_init_tables, task_id=create_tables_if_not_exists, run_id=manual__2026-02-05T20:16:51.310992+00:00, execution_date=20260205T201651, start_date=20260205T201652, end_date=20260205T201652
+[2026-02-05T20:16:52.914+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 0
+[2026-02-05T20:16:52.941+0000] {taskinstance.py:3895} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-02-05T20:16:52.944+0000] {local_task_job_runner.py:245} INFO - ::endgroup::

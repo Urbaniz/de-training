@@ -1,0 +1,43 @@
+[2026-02-05T21:36:19.716+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2026-02-05T21:36:19.741+0000] {taskinstance.py:2613} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: data_quality.check_rows manual__2026-02-05T21:36:18.151789+00:00 [queued]>
+[2026-02-05T21:36:19.752+0000] {taskinstance.py:2613} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: data_quality.check_rows manual__2026-02-05T21:36:18.151789+00:00 [queued]>
+[2026-02-05T21:36:19.753+0000] {taskinstance.py:2866} INFO - Starting attempt 1 of 1
+[2026-02-05T21:36:19.770+0000] {taskinstance.py:2889} INFO - Executing <Task(PythonOperator): check_rows> on 2026-02-05 21:36:18.151789+00:00
+[2026-02-05T21:36:19.780+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'data_quality', 'check_rows', 'manual__2026-02-05T21:36:18.151789+00:00', '--job-id', '14', '--raw', '--subdir', 'DAGS_FOLDER/dq.py', '--cfg-path', '/tmp/tmp1ythbwj0']
+[2026-02-05T21:36:19.784+0000] {standard_task_runner.py:105} INFO - Job 14: Subtask check_rows
+[2026-02-05T21:36:20.009+0000] {logging_mixin.py:190} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70 DeprecationWarning: This process (pid=2462) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-02-05T21:36:20.010+0000] {standard_task_runner.py:72} INFO - Started process 2466 to run task
+[2026-02-05T21:36:20.054+0000] {task_command.py:467} INFO - Running <TaskInstance: data_quality.check_rows manual__2026-02-05T21:36:18.151789+00:00 [running]> on host 134ebd8311dd
+[2026-02-05T21:36:20.156+0000] {taskinstance.py:3132} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='data_quality' AIRFLOW_CTX_TASK_ID='check_rows' AIRFLOW_CTX_EXECUTION_DATE='2026-02-05T21:36:18.151789+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-02-05T21:36:18.151789+00:00'
+[2026-02-05T21:36:20.157+0000] {taskinstance.py:731} INFO - ::endgroup::
+[2026-02-05T21:36:20.190+0000] {base.py:84} INFO - Retrieving connection 'pg_target'
+[2026-02-05T21:36:20.209+0000] {sql.py:553} INFO - Running statement: 
+        select file_name
+        from file_status
+        where loaded_at is not null
+          and checked_at is null
+        limit 1
+        , parameters: None
+[2026-02-05T21:36:20.215+0000] {sql.py:562} INFO - Rows affected: 1
+[2026-02-05T21:36:20.233+0000] {base.py:84} INFO - Retrieving connection 's3'
+[2026-02-05T21:36:20.234+0000] {connection_wrapper.py:325} INFO - AWS Connection (conn_id='s3', conn_type='aws') credentials retrieved from login and ***.
+[2026-02-05T21:36:20.412+0000] {sql.py:553} INFO - Running statement: 
+        select count(*)
+        from web_logs_loaded
+        where source_file = %s
+        , parameters: ('parquet/1.parquet',)
+[2026-02-05T21:36:20.419+0000] {sql.py:562} INFO - Rows affected: 1
+[2026-02-05T21:36:20.443+0000] {sql.py:553} INFO - Running statement: 
+        update file_status
+        set checked_at = now(),
+            table_rows = %s,
+            same = %s
+        where file_name = %s
+        , parameters: (12, True, 'parquet/1.parquet')
+[2026-02-05T21:36:20.454+0000] {sql.py:562} INFO - Rows affected: 1
+[2026-02-05T21:36:20.459+0000] {python.py:240} INFO - Done. Returned value was: None
+[2026-02-05T21:36:20.478+0000] {taskinstance.py:340} INFO - ::group::Post task execution logs
+[2026-02-05T21:36:20.479+0000] {taskinstance.py:352} INFO - Marking task as SUCCESS. dag_id=data_quality, task_id=check_rows, run_id=manual__2026-02-05T21:36:18.151789+00:00, execution_date=20260205T213618, start_date=20260205T213619, end_date=20260205T213620
+[2026-02-05T21:36:20.546+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 0
+[2026-02-05T21:36:20.566+0000] {taskinstance.py:3895} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-02-05T21:36:20.568+0000] {local_task_job_runner.py:245} INFO - ::endgroup::
