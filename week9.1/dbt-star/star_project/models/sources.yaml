@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: oltp
+    schema: public
+    tables:
+      - name: customers
+      - name: products
+      - name: sales
